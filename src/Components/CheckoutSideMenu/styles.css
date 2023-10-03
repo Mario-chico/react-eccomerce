@@ -1,0 +1,12 @@
+.checkout-side-menu {
+  width: 15rem;
+  height: calc(100vh - 2.4rem);
+  top: 2.3rem;
+}
+
+@media (min-width: 1024px) {
+  .checkout-side-menu {
+    height: calc(100vh - 3.9rem);
+    top: 3.8rem;
+  }
+}
