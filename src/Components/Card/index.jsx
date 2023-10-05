@@ -3,6 +3,7 @@ import { ShoppingCartContext } from "../../Context";
 
 const Card = (data) => {
   const context = useContext(ShoppingCartContext);
+
   const productShow = (productDetail) => {
     context.toggleProductDetail();
     context.setProductToshow(productDetail)
@@ -47,7 +48,7 @@ const Card = (data) => {
         {renderIcon(data.data.id)}
       </figure>
       <p className='flex justify-between'>
-        <span className='lg:text-sm text-xs font-light'>{data.data.title}</span>
+        <span className=' text-xs font-light'>{data.data.title}</span>
         <span className='lg:text-md text-sm font-medium'>${data.data.price}</span>
       </p>
       

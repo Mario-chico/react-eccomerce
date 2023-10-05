@@ -6,13 +6,15 @@ import { OrderCard } from '../OrderCard';
 import { totalPrice } from '../../utils';
 const CheckoutSideMenu = () => {
   const context = useContext(ShoppingCartContext);
+  
   const handleDelete = (id) => {
     const filteredOut = context.cartProducts.filter( product => product.id != id);
     context.setCartProducts(filteredOut);
   }
+  const date = new Date();
   const handleCheckout = () => {
     const orderToAdd = {
-      date : '03-10-2023',
+      date : date.toLocaleDateString(),
       products: context.cartProducts,
       totalProducts: context.cartProducts.length,
       totalPrice: totalPrice(context.cartProducts)

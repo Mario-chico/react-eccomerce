@@ -10,10 +10,10 @@ const OrderCard = (props) => {
   return (
     <div className='flex justify-between items-center'>
       <div className='flex items-center gap-2'>
-        <figure className="h-2/5 w-2/5 p-1" >
-          <img className='w-full h-full rounden-lg object-cover' src={imageUrl} alt={title} />
+        <figure className='h-2/5 w-2/5 p-1 ' >
+          <img className='w-full h-full rounded-lg object-cover' src={imageUrl} alt={title} />
         </figure>
-        <p className='text-sm font-light'>{title}</p>
+        <p className='text-xs font-light'>{title}</p>
       </div>
       <div className='flex items-center gap-2'>
         <p className='text-lg font-medium'>${price}</p>
