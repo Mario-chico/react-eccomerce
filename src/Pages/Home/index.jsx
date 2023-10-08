@@ -6,6 +6,28 @@ function Home() {
 
   const context = useContext(ShoppingCartContext);
 
+  const renderView = () => {
+    // Create an if condition to check if the length of the searchByTitle based on the context is up to 0 and return context.filter
+    if(context.searchByTitle?.length > 0){
+      if(context.filter?.length > 0){
+       return (
+          context.filter?.map((item) =>(
+            <Card key={item.id} data={item}/>
+          ))
+        )
+      }else{
+        return ( <div>No mames we buscale bien</div>
+        )
+      }
+    }else{
+      return (
+          context.items?.map((item) =>(
+            <Card key={item.id} data={item}/>
+          ))
+      )
+    }
+  }
+
   return (
     <>
       <div className='flex items-center justify-center w-80 mb-4'>
@@ -13,11 +35,7 @@ function Home() {
       </div>
       <input className='border rounded border-black mb-4 p-1 h-7' onChange={(event) => context.setSearchByTitle(event.target.value) } type='text' placeholder='Busquele, busquele bien' name='' id='' />
       <div className='grid gap-2 grid-cols-4 w-full max-w-xl lg:max-w-2xl'>
-         {
-          context.items?.map((item) =>(
-            <Card key={item.id} data={item}/>
-          ))
-        } 
+        {renderView()}
       </div>
       <ProductDetail/>
     </>
