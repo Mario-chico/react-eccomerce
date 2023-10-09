@@ -28,19 +28,43 @@ export const ShoppingCartProvider = ({children}) => {
   // Get products by title
   const [searchByTitle, setSearchByTitle] = useState(null);
   console.log(searchByTitle);
+  
+  // Get products by category
+  const [searchByCategory, setSearchByCategory] = useState(null);
 
   // Create a function to filter items based on searchByTitle state
-  
   const filterItems = (items, searchByTitle) => {
     return items?.filter((item) => item.title.toLowerCase().includes(searchByTitle.toLowerCase()));
   }
-  // Create an effect to update the items state based on the searchByTitle state
-  useEffect(() => {
-    if (searchByTitle) setFilter(filterItems(items, searchByTitle));
-    else setFilter(items);
-  } ,[items, searchByTitle]);
 
-  console.log(filter);
+  const filterItemsByCategory  = (items, searchByCategory) => {
+    return items?.filter((item) => item.category.name.toLowerCase().includes(searchByCategory.toLowerCase()));
+  }
+
+  const filterBy = (searchType, items, searchByTitle, searchByCategory) => {
+    if (searchType === 'BY_TITLE') {
+      return filterItems(items, searchByTitle)
+    }
+
+    if (searchType === 'BY_CATEGORY') {
+      return filterItemsByCategory(items, searchByCategory)
+    }
+
+    if (searchType === 'BY_TITLE_AND_CATEGORY') {
+      return filterItemsByCategory(items, searchByCategory).filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
+    }
+
+    if (!searchType) {
+      return items
+    }
+  }
+
+  useEffect(() => {
+    if (searchByTitle && searchByCategory) setFilter(filterBy('BY_TITLE_AND_CATEGORY', items, searchByTitle, searchByCategory))
+    if (searchByTitle && !searchByCategory) setFilter(filterBy('BY_TITLE', items, searchByTitle, searchByCategory))
+    if (!searchByTitle && searchByCategory) setFilter(filterBy('BY_CATEGORY', items, searchByTitle, searchByCategory))
+    if (!searchByTitle && !searchByCategory) setFilter(filterBy(null, items, searchByTitle, searchByCategory))
+  }, [items, searchByTitle, searchByCategory])
 
   useEffect(() => {
     try {
@@ -73,7 +97,9 @@ export const ShoppingCartProvider = ({children}) => {
       searchByTitle,
       setSearchByTitle,
       filter,
-      setFilter
+      setFilter,
+      searchByCategory, 
+      setSearchByCategory
       }}>
       {children}
     </ShoppingCartContext.Provider>
