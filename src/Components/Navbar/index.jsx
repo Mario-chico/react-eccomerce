@@ -7,12 +7,14 @@ const Navbar = () => {
   let leftMenu = [{
     to: '/',
     className: 'font-semibold text-lg',
-    text: 'Shopi'
+    text: 'Shopi',
+    onClick: () => context.setSearchByCategory()
   },
   {
     to: '/',
     className: '',
-    text: 'All'
+    text: 'All',
+    onClick: () => context.setSearchByCategory()
   },
   {
     to: '/clothes',

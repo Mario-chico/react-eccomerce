@@ -27,7 +27,6 @@ export const ShoppingCartProvider = ({children}) => {
 
   // Get products by title
   const [searchByTitle, setSearchByTitle] = useState(null);
-  console.log(searchByTitle);
   
   // Get products by category
   const [searchByCategory, setSearchByCategory] = useState(null);

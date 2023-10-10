@@ -19,9 +19,9 @@ const CheckoutSideMenu = () => {
       totalProducts: context.cartProducts.length,
       totalPrice: totalPrice(context.cartProducts)
     }
-    console.log(orderToAdd);
     context.setOrder([...context.order, orderToAdd]); //La orden tiene lo que tiene anteriormente más orderToAdd
-    context.setCartProducts([])
+    context.setCartProducts([]);
+    context.setSearchByTitle(null);
   }
   return (
     <aside className={` ${context.isCheckoutSideMenuOpen ? 'flex' : 'hidden'} flex-col checkout-side-menu fixed right-0 bg-white rounded-lg border border-black w-80`}>

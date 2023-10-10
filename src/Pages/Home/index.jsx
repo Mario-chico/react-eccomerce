@@ -8,8 +8,7 @@ function Home() {
 
   const renderView = () => {
     // Create an if condition to check if the length of the searchByTitle based on the context is up to 0 and return context.filter
-    if(context.searchByTitle?.length > 0){
-      if(context.filter?.length > 0){
+    if(context.filter?.length > 0){
        return (
           context.filter?.map((item) =>(
             <Card key={item.id} data={item}/>
@@ -19,13 +18,6 @@ function Home() {
         return ( <div>No mames we buscale bien</div>
         )
       }
-    }else{
-      return (
-          context.items?.map((item) =>(
-            <Card key={item.id} data={item}/>
-          ))
-      )
-    }
   }
 
   return (
