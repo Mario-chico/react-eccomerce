@@ -56,22 +56,34 @@ const Navbar = () => {
     text: 'Records'
   },
 ];
-  return (
-    <nav className="flex justify-between top-0 z-10 items-center fixed w-full py-1 lg:py-4 px-4 text-xs font-normal bg-amber-500">
-      <ul className="flex flex-row gap-2 text-emerald-800" >
-        {leftMenu.map((item) => (
-          <li key={item.text} className={item.className}>
-            <NavLink 
-              to={item.to} 
-              onClick={item.onClick}
-              className={({ isActive }) =>
-                isActive ? activeStyle : undefined}>
-                  {item.text}
-              </NavLink>
-          </li>
-        ))}
-      </ul>
-      <ul className="flex flex-row items-center gap-1">
+
+const signOut = localStorage.getItem('signOut');
+const parsedSignOut = JSON.parse(signOut);
+const isUserSignOut = context.signOut || parsedSignOut;
+
+const handleSignOut = () => {
+  const stringifiedSignOut = JSON.stringify(true);
+  localStorage.setItem('signOut', stringifiedSignOut);
+  context.setSignOut(true);
+}
+
+const renderView = () => {
+  if(isUserSignOut) {
+    return (
+      <li>
+        <NavLink
+          to='/sign-in'
+          className={({ isActive }) =>
+          isActive ? activeStyle : undefined
+          }
+          onClick={() => handleSignOut()}>
+          Sign In
+        </NavLink>
+      </li>
+    )
+  }else{
+    return (
+      <>
         <li className="text-black/60">
           correo@correo
         </li>
@@ -95,11 +107,12 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
-            to='/sing-in'
+            to='/sign-in'
             className={({ isActive }) =>
-              isActive ? activeStyle : undefined
-            }>
-            Sign In
+            isActive ? activeStyle : undefined
+            }
+            onClick={() => handleSignOut()}>
+            Sign Out
           </NavLink>
         </li>
         <li>
@@ -108,6 +121,27 @@ const Navbar = () => {
         </svg>
         {context.cartProducts.length}
         </li>
+      </>
+    )
+  }
+}
+  return (
+    <nav className="flex justify-between top-0 z-10 items-center fixed w-full py-1 lg:py-4 px-4 text-xs font-normal bg-amber-500">
+      <ul className="flex flex-row gap-2 text-emerald-800" >
+        {leftMenu.map((item) => (
+          <li key={item.text} className={item.className}>
+            <NavLink 
+              to={item.to} 
+              onClick={item.onClick}
+              className={({ isActive }) =>
+                isActive ? activeStyle : undefined}>
+                  {item.text}
+              </NavLink>
+          </li>
+        ))}
+      </ul>
+      <ul className="flex flex-row items-center gap-1">
+          {renderView()}
       </ul>
     </nav>
   );
