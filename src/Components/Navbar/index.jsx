@@ -1,11 +1,17 @@
-import { useContext } from "react";
-import { NavLink } from "react-router-dom";
-import { ShoppingCartContext } from "../../Context";
+import { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
+import { ShoppingCartContext } from '../../Context';
+import { ShoppingCart} from '../ShoppingCart';
 const Navbar = () => {
   const context = useContext(ShoppingCartContext);
   const activeStyle = 'underline underline-offset-4 decoration-solid text-violet-600'
+  
+  const signOut = localStorage.getItem('sign-out');
+  const parsedSignOut = JSON.parse(signOut);
+  const isUserSignOut = context.signOut || parsedSignOut;
+  
   let leftMenu = [{
-    to: '/',
+    to: isUserSignOut ? '/sign-in' : '/',
     className: 'font-semibold text-lg',
     text: 'Shopi',
     onClick: () => context.setSearchByCategory()
@@ -57,35 +63,27 @@ const Navbar = () => {
   },
 ];
 
-const signOut = localStorage.getItem('signOut');
-const parsedSignOut = JSON.parse(signOut);
-const isUserSignOut = context.signOut || parsedSignOut;
+
+
+  // Account
+  const account = localStorage.getItem('account');
+  const parsedAccount = JSON.parse(account);
+  // Has an account
+  const noAccountInLocalStorage = parsedAccount ? Object.keys(parsedAccount).length === 0 : true;
+  const noAccountInLocalState = parsedAccount ? Object.keys(context.account).length === 0 : true;
+  const hasUserAnAccount = !noAccountInLocalStorage || !noAccountInLocalState;
 
 const handleSignOut = () => {
   const stringifiedSignOut = JSON.stringify(true);
   localStorage.setItem('signOut', stringifiedSignOut);
   context.setSignOut(true);
 }
-
 const renderView = () => {
-  if(isUserSignOut) {
-    return (
-      <li>
-        <NavLink
-          to='/sign-in'
-          className={({ isActive }) =>
-          isActive ? activeStyle : undefined
-          }
-          onClick={() => handleSignOut()}>
-          Sign In
-        </NavLink>
-      </li>
-    )
-  }else{
+  if(hasUserAnAccount && !isUserSignOut) {
     return (
       <>
-        <li className="text-black/60">
-          correo@correo
+        <li className='text-black/60'>
+          {parsedAccount?.email}
         </li>
         <li>
           <NavLink
@@ -115,19 +113,26 @@ const renderView = () => {
             Sign Out
           </NavLink>
         </li>
-        <li>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-        </svg>
-        {context.cartProducts.length}
-        </li>
       </>
+    )
+  }else{
+    return (
+      <li>
+        <NavLink
+          to='/sign-in'
+          className={({ isActive }) =>
+          isActive ? activeStyle : undefined
+          }
+          onClick={() => handleSignOut()}>
+          Sign In
+        </NavLink>
+      </li>
     )
   }
 }
   return (
-    <nav className="flex justify-between top-0 z-10 items-center fixed w-full py-1 lg:py-4 px-4 text-xs font-normal bg-amber-500">
-      <ul className="flex flex-row gap-2 text-emerald-800" >
+    <nav className='flex justify-between top-0 z-10 items-center fixed w-full py-1 lg:py-4 px-4 text-xs font-normal bg-amber-500'>
+      <ul className='flex flex-row gap-2 text-emerald-800' >
         {leftMenu.map((item) => (
           <li key={item.text} className={item.className}>
             <NavLink 
@@ -140,8 +145,11 @@ const renderView = () => {
           </li>
         ))}
       </ul>
-      <ul className="flex flex-row items-center gap-1">
+      <ul className='flex flex-row items-center gap-1'>
           {renderView()}
+          <li className='flex items-center'>
+            <ShoppingCart />
+          </li>
       </ul>
     </nav>
   );
